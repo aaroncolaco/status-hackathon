@@ -1,5 +1,3 @@
-// 'use strict';
-
 status.addListener("on-message-send", function (params, context) {
     var result = {
         err: null,

@@ -36,6 +36,3 @@ status.command({
              return {markup: status.components.view({}, [text])};
          }
  });
-
-
-module.exports = {status};
