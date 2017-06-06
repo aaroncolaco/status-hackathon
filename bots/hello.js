@@ -106,7 +106,7 @@ status.command({
         type: status.types.TEXT,
         suggestions: helloSuggestions
     }]
-})
+});
 
 
 
