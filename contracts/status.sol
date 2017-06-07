@@ -72,41 +72,17 @@ contract RequestContract { // Request Contract
     }
     
     // get incoming request function
-    function getIncomingRequests() constant returns(uint[]) {
-        return incomingRequest[msg.sender];
+    function getIncomingRequests() constant returns(uint[]  id, address[]  from,  bytes32[]  status, uint256[]  date, uint256[]  amount, uint256[]  duration, bytes32[]  purpose) {
+        for(uint i=0; i< incomingRequest[msg.sender].length;i++) {
+            uint  reqId = incomingRequest[msg.sender][i];
+            id[i] = request[reqId].reqId;
+            from[i] = request[reqId].from;
+            status[i] = request[reqId].status;
+            date[i] = request[reqId].date; 
+            amount[i] = request[reqId].amount;
+            purpose[i] = request[reqId].purpose;
+         }
     }
-    // get Outgoing request function
-    function getOutgoingRequests() constant returns(uint[]) {
-        return outgoingRequest[msg.sender];
-   }
-
-
-    // get all requests
-    function getAllRequestDetails(uint reqid) external constant returns(bytes32[8]) {
-        bytes32[8] memory temp;
-        if (request[reqid].from == msg.sender || request[reqid].to == msg.sender) {
-          /*
-          returns:
-        address from;
-        address to;
-        bytes32 status;
-        uint256 date;
-        uint256 amount;
-        uint256 duration;
-        bytes32 purpose;
-          */
-          
-            temp[0] = bytes32(request[reqid].from);
-            temp[1] =bytes32(request[reqid].to); 
-            temp[2] = request[reqid].status;
-            temp[3] = bytes32(request[reqid].date);
-            temp[5] =bytes32(request[reqid].amount);
-            temp[6] = bytes32(request[reqid].duration);
-            temp[7] = request[reqid].purpose;
-        }
-        return temp;
-    }
-
 
 }
 contract AccountContract { // Account contract 
@@ -188,9 +164,6 @@ contract AccountContract { // Account contract
 
     }
 
-    
-    
-  
     // get lender name function
     function getlenderName() constant returns(bytes32) {
         return lenderAccounts[msg.sender].name;
@@ -202,37 +175,36 @@ contract AccountContract { // Account contract
     
   
     // borrow function return list of lenders
-    function getAllLenders(uint amount) constant returns(  bytes32[] memory ) {
-              //bytes32[nos] memory temp;
-              bytes32[] memory temp;
-            temp = new bytes32[](userNos);
+    function getAllLenders(uint amount) constant returns( address[] memory, bytes32[] memory, uint256[] memory, uint256[] memory, bytes32[] memory) {
+               address[] memory addr;
+               bytes32[] memory name;
+               uint256[] memory max;
+               uint256[] memory min;
+               bytes32[] memory interest;
+            addr = new address[](userNos);
+            name = new bytes32[](userNos);
+            max = new uint256[](userNos);
+            min = new uint256[](userNos);
+            interest = new bytes32[](userNos);
             uint  count=0;
              for (uint i = 0; i < userNos; i++) {
                  
                  if( ( lenderAccounts[userList[i]].account_type == 'lender')  && (amount <= lenderAccounts[userList[i]].max_amount)  && (amount >= lenderAccounts[userList[i]].min_amount)   )
                   {
-                  temp[i]=bytes32(userList[i]);
+                   addr[i]=userList[i];
+                   address temp = userList[i];
+                     name[count]= lenderAccounts[temp].name;
+                       min[count]= lenderAccounts[temp].min_amount;
+                      max[count]= lenderAccounts[temp].max_amount;
+                      interest[count]= lenderAccounts[temp].interest;
                   count++;
                   }
                  
              }
-             
-                
-               
-               
-              return temp ;
+   
+              return (addr,name,max,min,interest);
     }
-    
-    // get lender Details
-    function getInterest(address addr)constant returns (bytes32[2] memory){
-         bytes32[2] memory temp;
-         
-         temp[0]= lenderAccounts[addr].name;
-         temp[1]=lenderAccounts[addr].interest;
-         return temp;
-            
-    }
-    
+
     // test function
     function getSender() constant returns(address) {
         return msg.sender;
@@ -241,7 +213,7 @@ contract AccountContract { // Account contract
 }
 
 // Digital locker contract
-contract DigitalLocker is  AccountContract, RequestContract {
+contract microLending is  AccountContract, RequestContract {
 
     address owner = msg.sender;
     // reset data function
