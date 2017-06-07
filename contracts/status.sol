@@ -72,7 +72,23 @@ contract RequestContract { // Request Contract
     }
     
     // get incoming request function
-    function getIncomingRequests() constant returns(uint[]  id, address[]  from,  bytes32[]  status, uint256[]  date, uint256[]  amount, uint256[]  duration, bytes32[]  purpose) {
+    function getIncomingRequests() constant returns(uint[]  memory, address[]  memory,  bytes32[]  memory, uint256[]  memory, uint256[]  memory, uint256[]  memory , bytes32[]  memory) {
+       
+       uint[] memory id;
+       address[]  memory from;
+       bytes32[] memory status;
+       uint256[]  memory date;
+       uint256[] memory  amount;
+       uint256[] memory duration;
+       bytes32[] memory purpose;
+       
+       id = new uint[](totalReq);
+       from = new address[](totalReq);
+       status = new bytes32[](totalReq);
+       date = new uint256[](totalReq);
+       amount = new uint256[](totalReq);
+       duration = new uint256[](totalReq);
+       purpose = new bytes32[](totalReq);
         for(uint i=0; i< incomingRequest[msg.sender].length;i++) {
             uint  reqId = incomingRequest[msg.sender][i];
             id[i] = request[reqId].reqId;
@@ -82,7 +98,9 @@ contract RequestContract { // Request Contract
             amount[i] = request[reqId].amount;
             purpose[i] = request[reqId].purpose;
          }
+         return (id,from,status,date,amount,duration,purpose);
     }
+    
 
 }
 contract AccountContract { // Account contract 
