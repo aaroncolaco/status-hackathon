@@ -1,8 +1,8 @@
-var ABI = [{ "constant": true, "inputs": [], "name": "getIncomingRequests", "outputs": [{ "name": "", "type": "uint256[]" }, { "name": "", "type": "address[]" }, { "name": "", "type": "bytes32[]" }, { "name": "", "type": "uint256[]" }, { "name": "", "type": "uint256[]" }, { "name": "", "type": "uint256[]" }, { "name": "", "type": "bytes32[]" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "reqid", "type": "uint256" }], "name": "rejectRequest", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "reqid", "type": "uint256" }], "name": "acceptRequest", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "name", "type": "bytes32" }, { "name": "max_amount", "type": "uint256" }, { "name": "min_amount", "type": "uint256" }, { "name": "interest", "type": "bytes32" }], "name": "newLender", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "userId", "type": "address" }, { "name": "amount", "type": "uint256" }, { "name": "duration", "type": "uint256" }, { "name": "purpose", "type": "bytes32" }], "name": "borrowRequest", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getSender", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "amount", "type": "uint256" }], "name": "getAllLenders", "outputs": [{ "name": "", "type": "address[]" }, { "name": "", "type": "bytes32[]" }, { "name": "", "type": "uint256[]" }, { "name": "", "type": "uint256[]" }, { "name": "", "type": "bytes32[]" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getBorrowerName", "outputs": [{ "name": "", "type": "bytes32" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getlenderName", "outputs": [{ "name": "", "type": "bytes32" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "name", "type": "bytes32" }], "name": "newBorrower", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "checkAccountExists", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "type": "function" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "reqId", "type": "uint256" }, { "indexed": true, "name": "from", "type": "address" }, { "indexed": true, "name": "to", "type": "address" }], "name": "RequestMoney", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "reqId", "type": "uint256" }, { "indexed": true, "name": "from", "type": "address" }, { "indexed": true, "name": "to", "type": "address" }], "name": "AcceptRequest", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "reqid", "type": "uint256" }, { "indexed": true, "name": "from", "type": "address" }, { "indexed": true, "name": "to", "type": "address" }], "name": "RejectRequest", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "reqId", "type": "uint256" }, { "indexed": false, "name": "from", "type": "address" }, { "indexed": false, "name": "data", "type": "bytes32" }], "name": "Testing", "type": "event" }];
-var contractAddress = '0xca00d41a8f7325b058f2a77291d9687b5cdab34c';
+var ABI = [{ "constant": true, "inputs": [], "name": "getIncomingRequests", "outputs": [{ "name": "", "type": "uint256[]" }, { "name": "", "type": "address[]" }, { "name": "", "type": "bytes32[]" }, { "name": "", "type": "uint256[]" }, { "name": "", "type": "uint256[]" }, { "name": "", "type": "uint256[]" }, { "name": "", "type": "bytes32[]" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "reqid", "type": "uint256" }], "name": "rejectRequest", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "reqid", "type": "uint256" }], "name": "acceptRequest", "outputs": [], "payable": true, "type": "function" }, { "constant": false, "inputs": [{ "name": "name", "type": "bytes32" }, { "name": "min_amount", "type": "uint256" }, { "name": "max_amount", "type": "uint256" }, { "name": "interest", "type": "bytes32" }], "name": "newLender", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "userId", "type": "address" }, { "name": "amount", "type": "uint256" }, { "name": "duration", "type": "uint256" }, { "name": "purpose", "type": "bytes32" }], "name": "borrowRequest", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getSender", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "amount", "type": "uint256" }], "name": "getAllLenders", "outputs": [{ "name": "", "type": "address[]" }, { "name": "", "type": "bytes32[]" }, { "name": "", "type": "uint256[]" }, { "name": "", "type": "uint256[]" }, { "name": "", "type": "bytes32[]" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getBorrowerName", "outputs": [{ "name": "", "type": "bytes32" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getlenderName", "outputs": [{ "name": "", "type": "bytes32" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "name", "type": "bytes32" }], "name": "newBorrower", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "checkAccountExists", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "type": "function" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "reqId", "type": "uint256" }, { "indexed": true, "name": "from", "type": "address" }, { "indexed": true, "name": "to", "type": "address" }], "name": "RequestMoney", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "reqId", "type": "uint256" }, { "indexed": true, "name": "from", "type": "address" }, { "indexed": true, "name": "to", "type": "address" }], "name": "AcceptRequest", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "reqid", "type": "uint256" }, { "indexed": true, "name": "from", "type": "address" }, { "indexed": true, "name": "to", "type": "address" }], "name": "RejectRequest", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "reqId", "type": "uint256" }, { "indexed": false, "name": "from", "type": "address" }, { "indexed": false, "name": "data", "type": "bytes32" }], "name": "Testing", "type": "event" }];
+var contractAddress = '0xfa626cf03a7fbf00ae483a6b34c03d9dd065c715';
 
 var contractInstance = web3.eth.contract(ABI).at(contractAddress);
-var listOfLenders = ["Hello", "Goodbye"];
+var listOfLenders = [];
 
 
 // Borrow
@@ -49,36 +49,6 @@ function borrowAmount(params) {
     // return contractInstance.getAllLenders(params.amount, { from: web3.eth.accounts[0] });
 }
 
-function lenderSuggestions() {
-    var suggestions = listOfLenders.map(function (entry) {
-        return status.components.touchable(
-            { onPress: status.components.dispatch([status.events.SET_COMMAND_ARGUMENT, [3, entry]]) },
-            status.components.view(
-                suggestionsContainerStyle,
-                [status.components.view(
-                    suggestionSubContainerStyle,
-                    [
-                        status.components.text(
-                            { style: valueStyle },
-                            entry
-                        )
-                    ]
-                )]
-            )
-        );
-    });
-
-    // Let's wrap those two touchable buttons in a scrollView
-    var view = status.components.scrollView(
-        suggestionsContainerStyle(2),
-        suggestions
-    );
-
-    // Give back the whole thing inside an object.
-    return { markup: view };
-}
-
-
 
 // List lenders
 status.command({
@@ -108,10 +78,14 @@ status.command({
 
 function getLenders(params) {
     var returnString = '';
-    var lenderArray = contractInstance.getAllLenders(params.amount, { from: web3.eth.accounts[0] });
-    lenderArray = transposeArray(lenderArray);
+    listOfLenders = contractInstance.getAllLenders(params.amount, { from: web3.eth.accounts[0] });
 
-    returnString = web3.toAscii(lenderArray[0][1]).replace(/\u0000/g,'') + ', ' + lenderArray[0][2] + ', ' + lenderArray[0][3] + ', ' + web3.toAscii(lenderArray[0][4]);
+    listOfLenders = transposeArray(listOfLenders);
+
+    listOfLenders.map(function (lender, index) {
+        returnString += (++index) + ' : ' + web3.toAscii(lender[1]).replace(/\u0000/g, '') + ' , ' + web3.toAscii(lender[4]).replace(/\u0000/g, '') + ' ; ' + lender[0] + "\n\n";
+    });
+
     return returnString;
 }
 
@@ -185,7 +159,11 @@ status.command({
 });
 
 function registerAsLender(params) {
-    return contractInstance.newLender.sendTransaction(params.lenderName, parseInt(params.minAmount), parseInt(params.maxAmount), params.interestRate, { from: web3.eth.accounts[0] });
+    var name = params.lenderName;
+    var min = parseInt(params.minAmount);
+    var max = parseInt(params.maxAmount);
+    var interestRate = params.interestRate + '%'; // cannot pass only digits; fuck status
+    return contractInstance.newLender.sendTransaction(name, min, max, interestRate, { from: web3.eth.accounts[0] });
 }
 
 
@@ -212,7 +190,7 @@ status.addListener("on-message-send", function (params, context) {
         messages: []
     };
     try {
-        result["text-message"] = 'Sorry, I didn\'t get that.';
+        result["text-message"] = 'Sorry, I didn\'t get that!';
     } catch (e) {
         result.err = e;
     }
@@ -220,6 +198,35 @@ status.addListener("on-message-send", function (params, context) {
 });
 
 // helpers
+function lenderSuggestions() {
+    var suggestions = listOfLenders.map(function (lender, index) {
+        return status.components.touchable(
+            { onPress: status.components.dispatch([status.events.SET_COMMAND_ARGUMENT, [3, lender[0]]]) },
+            status.components.view(
+                suggestionsContainerStyle,
+                [status.components.view(
+                    suggestionSubContainerStyle,
+                    [
+                        status.components.text(
+                            { style: valueStyle },
+                            'Lender : ' + (index + 1) + ' ; Rate : ' + web3.toAscii(lender[4]).replace(/\u0000/g, '') + ' ; EthAccount : ' + lender[0]
+                        )
+                    ]
+                )]
+            )
+        );
+    });
+
+    // Let's wrap those two touchable buttons in a scrollView
+    var view = status.components.scrollView(
+        suggestionsContainerStyle(2),
+        suggestions
+    );
+
+    // Give back the whole thing inside an object.
+    return { markup: view };
+}
+
 function suggestionsContainerStyle(suggestionsCount) {
     return {
         marginVertical: 1,
@@ -231,6 +238,7 @@ function suggestionsContainerStyle(suggestionsCount) {
         flexGrow: 1
     };
 }
+
 var suggestionSubContainerStyle = {
     height: 56,
     borderBottomWidth: 1,
