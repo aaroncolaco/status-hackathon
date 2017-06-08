@@ -1,5 +1,11 @@
+
 pragma solidity ^0.4.2;
+
+
+
 contract RequestContract { // Request Contract
+
+
     struct Request { // Request structure
         uint reqId;
         address from;
@@ -16,11 +22,15 @@ contract RequestContract { // Request Contract
     mapping(address => uint[]) incomingRequest;
     mapping(address => uint[]) outgoingRequest;
    
+
     //Events for requests
     event RequestMoney( uint indexed reqId,address indexed from, address indexed to);
     event AcceptRequest(uint indexed reqId, address indexed from, address indexed to);
-    event RejectRequest(uint indexed reqid, address indexed from, address indexed to);
+   // event RejectRequest(uint indexed reqid, address indexed from, address indexed to);
+       event Payback(uint indexed reqid, address indexed from, address indexed to);
+
     function borrowRequest(address userId,uint256 amount, uint256 duration, bytes32 purpose) {
+
         totalReq++;
         request[totalReq] = Request({
             reqId: totalReq,
@@ -34,36 +44,53 @@ contract RequestContract { // Request Contract
           
           
         });
+
         outgoingRequest[msg.sender].push(totalReq);
         incomingRequest[userId].push(totalReq);
         RequestMoney(totalReq,userId, msg.sender); // request event
+
+
     }
     
     // accept request function
     function acceptRequest(uint reqid) payable {
-        if (reqid > totalReq || reqid <= 0 || msg.value != request[reqid].amount  ) {
+        if (reqid > totalReq || reqid <= 0 || msg.value != request[reqid].amount || request[reqid].status !='requested' ) {
             throw;
         } else {
             if (request[reqid].to == msg.sender) {
                 request[reqid].status = "accepted";
                   request[reqid].from.send(msg.value);
                 
-                }
+                            }
         }
         AcceptRequest(reqid, msg.sender, request[reqid].from); // accept event
     }
-   
-    // reject request function
-    function rejectRequest(uint reqid) {
-        if (reqid > totalReq && reqid <= 0) {
+    
+     // payback request function
+    function payback(uint reqid) payable {
+        if (reqid > totalReq || reqid <= 0 || msg.value != request[reqid].amount || request[reqid].status !='accepted'   ) {
             throw;
         } else {
-            if (request[reqid].to == msg.sender) {
-                request[reqid].status = "rejected";
-                          }
+            if (request[reqid].from == msg.sender) {
+                request[reqid].status = "settled";
+                  request[reqid].to.send(msg.value);
+                
+                }
         }
-        RejectRequest(reqid, msg.sender, request[reqid].from); // reject event
+        Payback(reqid, msg.sender, request[reqid].to); // accept event
     }
+   
+    // reject request function
+    // function rejectRequest(uint reqid) {
+    //     if (reqid > totalReq && reqid <= 0) {
+    //         throw;
+    //     } else {
+    //         if (request[reqid].to == msg.sender) {
+    //             request[reqid].status = "rejected";
+    //                       }
+    //     }
+    //     RejectRequest(reqid, msg.sender, request[reqid].from); // reject event
+    // }
     
     // get incoming request function
     function getIncomingRequests() constant returns(uint[]  memory, address[]  memory,  bytes32[]  memory, uint256[]  memory, uint256[]  memory, uint256[]  memory , bytes32[]  memory) {
@@ -90,12 +117,12 @@ contract RequestContract { // Request Contract
             status[i] = request[reqId].status;
             date[i] = request[reqId].date; 
             amount[i] = request[reqId].amount;
-            duration[i] = request[reqId].duration;
             purpose[i] = request[reqId].purpose;
          }
          return (id,from,status,date,amount,duration,purpose);
     }
     
+
 }
 contract AccountContract { // Account contract 
     struct LenderAccount //  LenderAccount structure
@@ -103,9 +130,12 @@ contract AccountContract { // Account contract
         bytes32 name;
         uint256 max_amount;
         uint256 min_amount;
-        bytes32 interest;
+        uint256 int_high;
+        uint256 int_low;
+        
         bytes32 account_type;
     }
+
     // map of accounts
     mapping(address => LenderAccount) lenderAccounts;
     
@@ -114,6 +144,7 @@ contract AccountContract { // Account contract
         bytes32 name;
         bytes32 account_type;
     }
+
     // map of accounts
     mapping(address => BorrowerAccount) borrowerAccounts;
     
@@ -138,8 +169,10 @@ contract AccountContract { // Account contract
         }
     }
     
+
     // new Lender account function
-    function newLender(bytes32 name, uint256 min_amount,uint256 max_amount,bytes32 interest) {
+    function newLender(bytes32 name, uint256 min_amount,uint256 max_amount,uint int_high,uint int_low) {
+
             // if(lenderAccounts[msg.sender].name =="")
             //   {
             //   Testing(1,msg.sender,"done");
@@ -150,23 +183,29 @@ contract AccountContract { // Account contract
             lenderAccounts[msg.sender].name = name;
             lenderAccounts[msg.sender].max_amount = max_amount;
             lenderAccounts[msg.sender].min_amount = min_amount;
-            lenderAccounts[msg.sender].interest=interest;
+            lenderAccounts[msg.sender].int_high=int_high;
+            lenderAccounts[msg.sender].int_low=int_low;
             lenderAccounts[msg.sender].account_type = "lender";
              userList[userNos]=msg.sender;
             userNos++;
             
        
+
     }
     
       // new Borrower account function
     function newBorrower(bytes32 name) {
+
+
             borrowerAccounts[msg.sender].name = name;
             borrowerAccounts[msg.sender].account_type = "borrower";
            
             // userList[userNos]=msg.sender;
             // userNos++;
       
+
     }
+
     // get lender name function
     function getlenderName() constant returns(bytes32) {
         return lenderAccounts[msg.sender].name;
@@ -206,7 +245,8 @@ contract AccountContract { // Account contract
                      name[count]= lenderAccounts[temp].name;
                        min[count]= lenderAccounts[temp].min_amount;
                       max[count]= lenderAccounts[temp].max_amount;
-                      interest[count]= lenderAccounts[temp].interest;
+                      
+                      interest[count]= bytes32(lenderAccounts[temp].int_high*100+lenderAccounts[temp].int_low);
                   count++;
                   }
                  
@@ -215,20 +255,30 @@ contract AccountContract { // Account contract
    
               return (addr,name,max,min,interest);
     }
+
     // test function
     function getSender() constant returns(address) {
         return msg.sender;
     }
+
 }
+
 // Digital locker contract
 contract microLending is  AccountContract, RequestContract {
+
     address owner = msg.sender;
     // reset data function
     // function resetData() {
+
     //     delete accounts[msg.sender];
   
     //     for (uint j = 0; j < totalReq; j++)
     //         delete request[j];
     //     delete totalReq;
     // }
+
+
 }
+
+
+
