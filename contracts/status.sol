@@ -1,4 +1,3 @@
-
 pragma solidity ^0.4.2;
 contract RequestContract { // Request Contract
     struct Request { // Request structure
@@ -91,6 +90,7 @@ contract RequestContract { // Request Contract
             status[i] = request[reqId].status;
             date[i] = request[reqId].date; 
             amount[i] = request[reqId].amount;
+            duration[i] = request[reqId].duration;
             purpose[i] = request[reqId].purpose;
          }
          return (id,from,status,date,amount,duration,purpose);
@@ -140,19 +140,20 @@ contract AccountContract { // Account contract
     
     // new Lender account function
     function newLender(bytes32 name, uint256 min_amount,uint256 max_amount,bytes32 interest) {
-            if(lenderAccounts[msg.sender].name =="")
-              {
-               Testing(1,msg.sender,"done");
-                userList[userNos]=msg.sender;
-                userNos++;
-            }
+            // if(lenderAccounts[msg.sender].name =="")
+            //   {
+            //   Testing(1,msg.sender,"done");
+            //     userList[userNos]=msg.sender;
+            //     userNos++;
+            // }
        
             lenderAccounts[msg.sender].name = name;
             lenderAccounts[msg.sender].max_amount = max_amount;
             lenderAccounts[msg.sender].min_amount = min_amount;
             lenderAccounts[msg.sender].interest=interest;
             lenderAccounts[msg.sender].account_type = "lender";
-           
+             userList[userNos]=msg.sender;
+            userNos++;
             
        
     }
