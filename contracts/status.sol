@@ -122,6 +122,36 @@ contract RequestContract { // Request Contract
          return (id,from,status,date,amount,duration,purpose);
     }
     
+     // get outgoing request function
+    function getOutgoingRequests() constant returns(uint[]  memory, address[]  memory,  bytes32[]  memory, uint256[]  memory, uint256[]  memory, uint256[]  memory , bytes32[]  memory) {
+       
+       uint[] memory id;
+       address[]  memory from;
+       bytes32[] memory status;
+       uint256[]  memory date;
+       uint256[] memory  amount;
+       uint256[] memory duration;
+       bytes32[] memory purpose;
+       
+       id = new uint[](totalReq);
+       from = new address[](totalReq);
+       status = new bytes32[](totalReq);
+       date = new uint256[](totalReq);
+       amount = new uint256[](totalReq);
+       duration = new uint256[](totalReq);
+       purpose = new bytes32[](totalReq);
+        for(uint i=0; i< outgoingRequest[msg.sender].length;i++) {
+            uint  reqId = outgoingRequest[msg.sender][i];
+            id[i] = request[reqId].reqId;
+            from[i] = request[reqId].from;
+            status[i] = request[reqId].status;
+            date[i] = request[reqId].date; 
+            amount[i] = request[reqId].amount;
+            purpose[i] = request[reqId].purpose;
+         }
+         return (id,from,status,date,amount,duration,purpose);
+    }
+    
 
 }
 contract AccountContract { // Account contract 
@@ -207,13 +237,13 @@ contract AccountContract { // Account contract
     }
 
     // get lender name function
-    function getlenderName() constant returns(bytes32) {
-        return lenderAccounts[msg.sender].name;
+    function getName(address addr) constant returns(bytes32) {
+        
+        if(lenderAccounts[addr].name != "")
+         return lenderAccounts[addr].name;
+         else return borrowerAccounts[addr].name;
     }
-     // get Borrower name function
-    function getBorrowerName() constant returns(bytes32) {
-        return borrowerAccounts[msg.sender].name;
-    }
+    
     
   
     // borrow function return list of lenders
