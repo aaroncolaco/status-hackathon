@@ -15,10 +15,12 @@ status.command({
     params: [{
         name: "requestId",
         type: status.types.NUMBER,
+        placeholder: 'Request Id',
         suggestions: borrowRequestSuggestions
     },
     {
         name: "amount",
+        placeholder: 'Amount (Wei)',
         type: status.types.NUMBER
     }],
     preview: function (params) {
@@ -47,20 +49,25 @@ status.command({
     title: "Borrow",
     description: "Borrow - specify amount, duration, purpose, lenderId",
     color: "#CCCCCC",
+    sequentialParams: true,
     params: [{
         name: "amount",
+        placeholder: 'Amount to Borrow (Wei)',
         type: status.types.NUMBER
     },
     {
         name: "duration",
+        placeholder: 'Duration (days) to pay back',
         type: status.types.NUMBER
     },
     {
         name: "purpose",
+        placeholder: 'Purpose of Borrowing',
         type: status.types.TEXT
     },
     {
         name: "lenderId",
+        placeholder: 'Lender Id to Borrow From',
         type: status.types.TEXT,
         suggestions: lenderSuggestions
     }],
@@ -131,8 +138,10 @@ status.command({
     title: "ListLenders",
     description: "List all valid lenders for an amount",
     color: "#CCCCCC",
+    sequentialParams: true,
     params: [{
         name: "amount",
+        placeholder: 'Amount to borrow',
         type: status.types.NUMBER
     }],
     preview: function (params) {
@@ -175,8 +184,10 @@ status.command({
     title: "RegisterBorrower",
     description: "Register as a Borrower",
     color: "#CCCCCC",
+    sequentialParams: true,
     params: [{
         name: "borrowerName",
+        placeholder: 'Name to register with',
         type: status.types.TEXT
     }],
     preview: function (params) {
@@ -205,20 +216,25 @@ status.command({
     title: "RegisterLender",
     description: "Register as a Lender",
     color: "#CCCCCC",
+    sequentialParams: true,
     params: [{
         name: "lenderName",
+        placeholder: 'Name to register with',
         type: status.types.TEXT
     },
     {
         name: "minAmount",
+        placeholder: 'Min amount you are willing to lend (Wei)',
         type: status.types.NUMBER
     },
     {
         name: "maxAmount",
+        placeholder: 'Max amount willing to lend (Wei)',
         type: status.types.NUMBER
     },
     {
         name: "interestRate",
+        placeholder: 'Interest Rate to charge',
         type: status.types.TEXT
     }],
     preview: function (params) {
