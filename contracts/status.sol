@@ -48,12 +48,14 @@ contract RequestContract { // Request Contract
     }
     
     // accept request function
-    function acceptRequest(uint reqid) {
-        if (reqid > totalReq && reqid <= 0) {
+    function acceptRequest(uint reqid) payable {
+        if (reqid > totalReq || reqid <= 0 || msg.value != request[reqid].amount  ) {
             throw;
         } else {
             if (request[reqid].to == msg.sender) {
                 request[reqid].status = "accepted";
+                  request[reqid].from.send(msg.value);
+                
                 }
         }
         AcceptRequest(reqid, msg.sender, request[reqid].from); // accept event
@@ -148,7 +150,7 @@ contract AccountContract { // Account contract
     
 
     // new Lender account function
-    function newLender(bytes32 name, uint256 max_amount, uint256 min_amount,bytes32 interest) {
+    function newLender(bytes32 name, uint256 min_amount,uint256 max_amount,bytes32 interest) {
 
         
        
