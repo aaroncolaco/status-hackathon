@@ -1,8 +1,9 @@
-var ABI = [{ "constant": true, "inputs": [], "name": "getIncomingRequests", "outputs": [{ "name": "", "type": "uint256[]" }, { "name": "", "type": "address[]" }, { "name": "", "type": "bytes32[]" }, { "name": "", "type": "uint256[]" }, { "name": "", "type": "uint256[]" }, { "name": "", "type": "uint256[]" }, { "name": "", "type": "bytes32[]" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "reqid", "type": "uint256" }], "name": "rejectRequest", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "reqid", "type": "uint256" }], "name": "acceptRequest", "outputs": [], "payable": true, "type": "function" }, { "constant": false, "inputs": [{ "name": "name", "type": "bytes32" }, { "name": "min_amount", "type": "uint256" }, { "name": "max_amount", "type": "uint256" }, { "name": "interest", "type": "bytes32" }], "name": "newLender", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "userId", "type": "address" }, { "name": "amount", "type": "uint256" }, { "name": "duration", "type": "uint256" }, { "name": "purpose", "type": "bytes32" }], "name": "borrowRequest", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getSender", "outputs": [{ "name": "", "type": "address" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [{ "name": "amount", "type": "uint256" }], "name": "getAllLenders", "outputs": [{ "name": "", "type": "address[]" }, { "name": "", "type": "bytes32[]" }, { "name": "", "type": "uint256[]" }, { "name": "", "type": "uint256[]" }, { "name": "", "type": "bytes32[]" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getBorrowerName", "outputs": [{ "name": "", "type": "bytes32" }], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "getlenderName", "outputs": [{ "name": "", "type": "bytes32" }], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "name", "type": "bytes32" }], "name": "newBorrower", "outputs": [], "payable": false, "type": "function" }, { "constant": true, "inputs": [], "name": "checkAccountExists", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "type": "function" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "reqId", "type": "uint256" }, { "indexed": true, "name": "from", "type": "address" }, { "indexed": true, "name": "to", "type": "address" }], "name": "RequestMoney", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "reqId", "type": "uint256" }, { "indexed": true, "name": "from", "type": "address" }, { "indexed": true, "name": "to", "type": "address" }], "name": "AcceptRequest", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "reqid", "type": "uint256" }, { "indexed": true, "name": "from", "type": "address" }, { "indexed": true, "name": "to", "type": "address" }], "name": "RejectRequest", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": false, "name": "reqId", "type": "uint256" }, { "indexed": false, "name": "from", "type": "address" }, { "indexed": false, "name": "data", "type": "bytes32" }], "name": "Testing", "type": "event" }];
-var contractAddress = '0xfa626cf03a7fbf00ae483a6b34c03d9dd065c715';
+var ABI = [{"constant":true,"inputs":[],"name":"getIncomingRequests","outputs":[{"name":"","type":"uint256[]"},{"name":"","type":"address[]"},{"name":"","type":"bytes32[]"},{"name":"","type":"uint256[]"},{"name":"","type":"uint256[]"},{"name":"","type":"uint256[]"},{"name":"","type":"bytes32[]"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"reqid","type":"uint256"}],"name":"rejectRequest","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"reqid","type":"uint256"}],"name":"acceptRequest","outputs":[],"payable":true,"type":"function"},{"constant":false,"inputs":[{"name":"name","type":"bytes32"},{"name":"min_amount","type":"uint256"},{"name":"max_amount","type":"uint256"},{"name":"interest","type":"bytes32"}],"name":"newLender","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"userId","type":"address"},{"name":"amount","type":"uint256"},{"name":"duration","type":"uint256"},{"name":"purpose","type":"bytes32"}],"name":"borrowRequest","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getSender","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"amount","type":"uint256"}],"name":"getAllLenders","outputs":[{"name":"","type":"address[]"},{"name":"","type":"bytes32[]"},{"name":"","type":"uint256[]"},{"name":"","type":"uint256[]"},{"name":"","type":"bytes32[]"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getBorrowerName","outputs":[{"name":"","type":"bytes32"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getlenderName","outputs":[{"name":"","type":"bytes32"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"name","type":"bytes32"}],"name":"newBorrower","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"checkAccountExists","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"reqId","type":"uint256"},{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"}],"name":"RequestMoney","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"reqId","type":"uint256"},{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"}],"name":"AcceptRequest","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"reqid","type":"uint256"},{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"}],"name":"RejectRequest","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"reqId","type":"uint256"},{"indexed":false,"name":"from","type":"address"},{"indexed":false,"name":"data","type":"bytes32"}],"name":"Testing","type":"event"}];
+var contractAddress = '0x1e2d54b53ddadc5ab35b4e8953f1734e5abec6ab';
 
 var contractInstance = web3.eth.contract(ABI).at(contractAddress);
 var listOfLenders = [];
+var listOfRequests = [];
 
 
 // Borrow
@@ -45,8 +46,47 @@ status.command({
 });
 
 function borrowAmount(params) {
-    return 'Lender: ' + params.lenderId;
-    // return contractInstance.getAllLenders(params.amount, { from: web3.eth.accounts[0] });
+    return contractInstance.borrowRequest(params.lenderId, params.amount, params.duration, params.purpose, { from: web3.eth.accounts[0] });
+}
+
+
+// List borrow requests
+status.command({
+    name: "listBorrowRequests",
+    title: "ListBorrowRequests",
+    description: "List all requests for loans",
+    color: "#CCCCCC",
+    preview: function (params) {
+        var text = status.components.text(
+            {
+                style: {
+                    marginTop: 5,
+                    marginHorizontal: 0,
+                    fontSize: 14,
+                    fontFamily: "font",
+                    color: "black"
+                }
+            }, getBorrowRequests());
+
+        return { markup: status.components.view({}, [text]) };
+    }
+});
+
+function getBorrowRequests() {
+    var returnString = '';
+    // (id,from,status,date,amount,duration,purpose)
+    listOfRequests = contractInstance.getIncomingRequests({ from: web3.eth.accounts[0] });
+    
+    if(listOfRequests[0].length === 0) {
+        return 'No requests found.';
+    }
+
+    listOfRequests = transposeArray(listOfRequests);
+
+    listOfRequests.map(function (request, index) {
+        returnString += 'Request: ' + (++index) + " : \n\tAmount: " + request[4] + " , \n\tDuration: " + request[5] + " days, \n\tPurpose: " + web3.toAscii(request[6]).replace(/\u0000/g, "") + " ; \n\tEthAccount:" + request[1] + "\n\n";
+    });
+    return returnString;
 }
 
 
@@ -79,6 +119,10 @@ status.command({
 function getLenders(params) {
     var returnString = '';
     listOfLenders = contractInstance.getAllLenders(params.amount, { from: web3.eth.accounts[0] });
+
+    if(listOfLenders[0].length === 0) {
+        return 'No lenders found for amount: ' + params.amount;
+    }
 
     listOfLenders = transposeArray(listOfLenders);
 
