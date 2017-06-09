@@ -224,12 +224,12 @@ status.command({
     },
     {
         name: "minAmount",
-        placeholder: 'Min lending amount (Ether)',
+        placeholder: 'Min lending amount(Eth)',
         type: status.types.NUMBER
     },
     {
         name: "maxAmount",
-        placeholder: 'Max lending amount (Ether)',
+        placeholder: 'Max lending amount(Eth)',
         type: status.types.NUMBER
     },
     {
