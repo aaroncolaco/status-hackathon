@@ -160,8 +160,7 @@ contract AccountContract { // Account contract
         bytes32 name;
         uint256 max_amount;
         uint256 min_amount;
-        uint256 int_high;
-        uint256 int_low;
+        uint interest;
         
         bytes32 account_type;
     }
@@ -201,7 +200,7 @@ contract AccountContract { // Account contract
     
 
     // new Lender account function
-    function newLender(bytes32 name, uint256 min_amount,uint256 max_amount,uint int_high,uint int_low) {
+    function newLender(bytes32 name, uint256 min_amount,uint256 max_amount,uint interest) {
 
             // if(lenderAccounts[msg.sender].name =="")
             //   {
@@ -213,8 +212,8 @@ contract AccountContract { // Account contract
             lenderAccounts[msg.sender].name = name;
             lenderAccounts[msg.sender].max_amount = max_amount;
             lenderAccounts[msg.sender].min_amount = min_amount;
-            lenderAccounts[msg.sender].int_high=int_high;
-            lenderAccounts[msg.sender].int_low=int_low;
+            lenderAccounts[msg.sender].interest=interest;
+          
             lenderAccounts[msg.sender].account_type = "lender";
              userList[userNos]=msg.sender;
             userNos++;
@@ -247,12 +246,12 @@ contract AccountContract { // Account contract
     
   
     // borrow function return list of lenders
-    function getAllLenders(uint amount) constant returns( address[] memory, bytes32[] memory, uint256[] memory, uint256[] memory, bytes32[] memory) {
+    function getAllLenders(uint amount) constant returns( address[] memory, bytes32[] memory, uint256[] memory, uint256[] memory, uint[] memory) {
                address[] memory addr;
                bytes32[] memory name;
                uint256[] memory max;
                uint256[] memory min;
-               bytes32[] memory interest;
+               uint[] memory interest;
               uint arrayLength=0; 
                for (uint i = 0; i < userNos; i++) {
                  if( ( lenderAccounts[userList[i]].account_type == 'lender')  && (amount <= lenderAccounts[userList[i]].max_amount)  && (amount >= lenderAccounts[userList[i]].min_amount)   )
@@ -260,11 +259,12 @@ contract AccountContract { // Account contract
                     arrayLength++;
                   }
                }
+    
              addr = new address[](arrayLength);
              name = new bytes32[](arrayLength);
              max = new uint256[](arrayLength);
              min = new uint256[](arrayLength);
-             interest = new bytes32[](arrayLength);
+             interest = new uint[](arrayLength);
             uint  count=0;
              for ( i = 0; i < userNos; i++) {
                  
@@ -276,7 +276,7 @@ contract AccountContract { // Account contract
                        min[count]= lenderAccounts[temp].min_amount;
                       max[count]= lenderAccounts[temp].max_amount;
                       
-                      interest[count]= bytes32(lenderAccounts[temp].int_high*100+lenderAccounts[temp].int_low);
+                      interest[count]= lenderAccounts[temp].interest;
                   count++;
                   }
                  
