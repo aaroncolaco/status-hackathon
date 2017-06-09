@@ -1,9 +1,10 @@
 var ABI = [{"constant":true,"inputs":[],"name":"getIncomingRequests","outputs":[{"name":"","type":"uint256[]"},{"name":"","type":"address[]"},{"name":"","type":"bytes32[]"},{"name":"","type":"uint256[]"},{"name":"","type":"uint256[]"},{"name":"","type":"uint256[]"},{"name":"","type":"bytes32[]"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"reqid","type":"uint256"}],"name":"acceptRequest","outputs":[],"payable":true,"type":"function"},{"constant":false,"inputs":[{"name":"userId","type":"address"},{"name":"amount","type":"uint256"},{"name":"duration","type":"uint256"},{"name":"purpose","type":"bytes32"}],"name":"borrowRequest","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getSender","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"addr","type":"address"}],"name":"getName","outputs":[{"name":"","type":"bytes32"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"amount","type":"uint256"}],"name":"getAllLenders","outputs":[{"name":"","type":"address[]"},{"name":"","type":"bytes32[]"},{"name":"","type":"uint256[]"},{"name":"","type":"uint256[]"},{"name":"","type":"uint256[]"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"reqid","type":"uint256"}],"name":"payback","outputs":[],"payable":true,"type":"function"},{"constant":false,"inputs":[{"name":"name","type":"bytes32"},{"name":"min_amount","type":"uint256"},{"name":"max_amount","type":"uint256"},{"name":"interest","type":"uint256"}],"name":"newLender","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"name","type":"bytes32"}],"name":"newBorrower","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"checkAccountExists","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getOutgoingRequests","outputs":[{"name":"","type":"uint256[]"},{"name":"","type":"address[]"},{"name":"","type":"bytes32[]"},{"name":"","type":"uint256[]"},{"name":"","type":"uint256[]"},{"name":"","type":"uint256[]"},{"name":"","type":"bytes32[]"}],"payable":false,"type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"reqId","type":"uint256"},{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"}],"name":"RequestMoney","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"reqId","type":"uint256"},{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"}],"name":"AcceptRequest","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"reqid","type":"uint256"},{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"}],"name":"Payback","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"reqId","type":"uint256"},{"indexed":false,"name":"from","type":"address"},{"indexed":false,"name":"data","type":"bytes32"}],"name":"Testing","type":"event"}];
-var contractAddress = '0x8a8d79dad9db0890f840dbda0d58159290dbea09';
+var contractAddress = '0xed687c8d0cc353fd6c3651f9eb276154e15da696';
 
 var contractInstance = web3.eth.contract(ABI).at(contractAddress);
 var listOfLenders = [];
-var listOfRequests = [];
+var lenderRequests = [];
+var borrowerRequests = [];
 
 
 // Borrow
@@ -55,11 +56,11 @@ function borrowAmount(params) {
 }
 
 
-// List borrow requests
+// View all lender's requests
 status.command({
     name: "listBorrowRequests",
     title: "ListBorrowRequests",
-    description: "List all requests for loans",
+    description: "List all requests to a Lender",
     color: "#CCCCCC",
     preview: function (params) {
         var text = status.components.text(
@@ -71,41 +72,56 @@ status.command({
                     fontFamily: "font",
                     color: "black"
                 }
-            }, getBorrowRequests());
+            }, getRequestsToLender());
 
         return { markup: status.components.view({}, [text]) };
     }
 });
 
-function getBorrowRequests() {
-    var returnString = '';
-    // (id,from,status,date,amount,duration,purpose)
-    listOfRequests = contractInstance.getIncomingRequests({ from: web3.eth.accounts[0] });
+function getRequestsToLender() {
+    lenderRequests = transposeArray(contractInstance.getIncomingRequests({ from: web3.eth.accounts[0] }));
+    return arrayToRequestString(lenderRequests);
+}
 
-    if (listOfRequests[0].length === 0) {
-        return 'No requests found.';
+// View all borrower's requests
+status.command({
+    name: "viewSubmittedRequests",
+    title: "ViewSubmittedRequests",
+    description: "List requests by a Borrower",
+    color: "#CCCCCC",
+    preview: function (params) {
+        var text = status.components.text(
+            {
+                style: {
+                    marginTop: 5,
+                    marginHorizontal: 0,
+                    fontSize: 14,
+                    fontFamily: "font",
+                    color: "black"
+                }
+            }, getRequestsByBorrower());
+
+        return { markup: status.components.view({}, [text]) };
     }
+});
 
-    listOfRequests = transposeArray(listOfRequests);
-
-    listOfRequests.map(function (request, index) {
-        returnString += 'Request: ' + (++index) + " : \n\tAmount: " + request[4] + ", \n\tDuration: " + request[5] + " days, \n\tPurpose: " + web3.toAscii(request[6]).replace(/\u0000/g, '') + ", \n\tStatus: " + web3.toAscii(request[2]).replace(/\u0000/g, '') + ", \n\tEthAccount:" + request[1] + "\n\n";
-    });
-    return returnString;
+function getRequestsByBorrower() {
+    borrowerRequests = transposeArray(contractInstance.getOutgoingRequests({ from: web3.eth.accounts[0] }));
+    return arrayToRequestString(borrowerRequests);
 }
 
 
 // Accept Borrow Request
 status.command({
     name: "acceptRequest",
-    title: "acceptRequest",
+    title: "AcceptRequest",
     description: "Accept Borrow Request - specify request Id",
     color: "#CCCCCC",
     params: [{
         name: "requestId",
         type: status.types.NUMBER,
         placeholder: 'Request',
-        suggestions: borrowRequestSuggestions
+        suggestions: requestSuggestionsForLender
     },
     {
         name: "amount",
@@ -172,11 +188,50 @@ function getLenders(params) {
     listOfLenders = transposeArray(listOfLenders);
 
     listOfLenders.map(function (lender, index) {
-        returnString += (++index) + ' : ' + web3.toAscii(lender[1]).replace(/\u0000/g, '') + ' , ' + lender[4]/100 + '% ; ' + lender[0] + "\n\n";
+        returnString += (++index) + ' : ' + web3.toAscii(lender[1]).replace(/\u0000/g, '') + ' , ' + lender[4] / 100 + '% ; ' + lender[0] + "\n\n";
     });
 
     return returnString;
 }
+
+
+// Pay back lender
+status.command({
+    name: "payBack",
+    title: "PayBack",
+    description: "Pay Back Lender - specify request Id",
+    color: "#CCCCCC",
+    params: [{
+        name: "requestId",
+        type: status.types.NUMBER,
+        placeholder: 'Request',
+        suggestions: requestSuggestionsForBorrower
+    },
+    {
+        name: "amount",
+        placeholder: 'Amount',
+        type: status.types.NUMBER
+    }],
+    preview: function (params) {
+        var text = status.components.text(
+            {
+                style: {
+                    marginTop: 5,
+                    marginHorizontal: 0,
+                    fontSize: 14,
+                    fontFamily: "font",
+                    color: "black"
+                }
+            }, payBack(params));
+
+        return { markup: status.components.view({}, [text]) };
+    }
+});
+
+function payBack(params) {
+    return contractInstance.payback(params.requestId, { from: web3.eth.accounts[0], value: params.amount });
+}
+
 
 
 // Register as Borrower
@@ -294,8 +349,52 @@ status.addListener("on-message-send", function (params, context) {
 });
 
 // helpers
-function borrowRequestSuggestions() {
-    var suggestions = listOfRequests.map(function (request, index) {
+function arrayToRequestString(requestArray) {
+    var returnString = '';
+
+    if (requestArray[0].length === 0) {
+        return 'No requests found.';
+    }
+
+    requestArray.map(function (request, index) {
+        returnString += 'Request: ' + (++index) + " : \n\tAmount: " + request[4] + ", \n\tDuration: " + request[5] + " days, \n\tPurpose: " + web3.toAscii(request[6]).replace(/\u0000/g, '') + ", \n\tStatus: " + web3.toAscii(request[2]).replace(/\u0000/g, '') + ", \n\tEthAccount:" + request[1] + "\n\n";
+    });
+    return returnString;
+}
+
+
+function requestSuggestionsForBorrower() {
+    var suggestions = borrowerRequests.map(function (request, index) {
+        return status.components.touchable(
+            { onPress: status.components.dispatch([status.events.SET_COMMAND_ARGUMENT, [0, request[0] + ' ' + request[4]]]) },
+            status.components.view(
+                suggestionsContainerStyle,
+                [status.components.view(
+                    suggestionSubContainerStyle,
+                    [
+                        status.components.text(
+                            { style: valueStyle },
+                            'Req Id : ' + request[0] + ' ; Amount : ' + request[4] + ' ; Duration : ' + request[5] + ' days'
+                        )
+                    ]
+                )]
+            )
+        );
+    });
+
+    // Let's wrap those two touchable buttons in a scrollView
+    var view = status.components.scrollView(
+        suggestionsContainerStyle(2),
+        suggestions
+    );
+
+    // Give back the whole thing inside an object.
+    return { markup: view };
+}
+
+
+function requestSuggestionsForLender() {
+    var suggestions = lenderRequests.map(function (request, index) {
         return status.components.touchable(
             { onPress: status.components.dispatch([status.events.SET_COMMAND_ARGUMENT, [0, request[0] + ' ' + request[4]]]) },
             status.components.view(
@@ -335,7 +434,7 @@ function lenderSuggestions() {
                     [
                         status.components.text(
                             { style: valueStyle },
-                            'Lender : ' + (index + 1) + ' ; Rate : ' + lender[4]/100 + '% ; EthAccount : ' + lender[0]
+                            'Lender : ' + (index + 1) + ' ; Rate : ' + lender[4] / 100 + '% ; EthAccount : ' + lender[0]
                         )
                     ]
                 )]
