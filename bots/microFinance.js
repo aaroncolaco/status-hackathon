@@ -1,5 +1,5 @@
 var ABI = [{"constant":true,"inputs":[],"name":"getIncomingRequests","outputs":[{"name":"","type":"uint256[]"},{"name":"","type":"address[]"},{"name":"","type":"bytes32[]"},{"name":"","type":"uint256[]"},{"name":"","type":"uint256[]"},{"name":"","type":"uint256[]"},{"name":"","type":"bytes32[]"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"reqid","type":"uint256"}],"name":"acceptRequest","outputs":[],"payable":true,"type":"function"},{"constant":false,"inputs":[{"name":"userId","type":"address"},{"name":"amount","type":"uint256"},{"name":"duration","type":"uint256"},{"name":"purpose","type":"bytes32"}],"name":"borrowRequest","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getSender","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"addr","type":"address"}],"name":"getName","outputs":[{"name":"","type":"bytes32"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"amount","type":"uint256"}],"name":"getAllLenders","outputs":[{"name":"","type":"address[]"},{"name":"","type":"bytes32[]"},{"name":"","type":"uint256[]"},{"name":"","type":"uint256[]"},{"name":"","type":"uint256[]"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"reqid","type":"uint256"}],"name":"payback","outputs":[],"payable":true,"type":"function"},{"constant":false,"inputs":[{"name":"name","type":"bytes32"},{"name":"min_amount","type":"uint256"},{"name":"max_amount","type":"uint256"},{"name":"interest","type":"uint256"}],"name":"newLender","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"name","type":"bytes32"}],"name":"newBorrower","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"checkAccountExists","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getOutgoingRequests","outputs":[{"name":"","type":"uint256[]"},{"name":"","type":"address[]"},{"name":"","type":"bytes32[]"},{"name":"","type":"uint256[]"},{"name":"","type":"uint256[]"},{"name":"","type":"uint256[]"},{"name":"","type":"bytes32[]"}],"payable":false,"type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"reqId","type":"uint256"},{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"}],"name":"RequestMoney","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"reqId","type":"uint256"},{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"}],"name":"AcceptRequest","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"reqid","type":"uint256"},{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"}],"name":"Payback","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"reqId","type":"uint256"},{"indexed":false,"name":"from","type":"address"},{"indexed":false,"name":"data","type":"bytes32"}],"name":"Testing","type":"event"}];
-var contractAddress = '0xed687c8d0cc353fd6c3651f9eb276154e15da696';
+var contractAddress = '0xd9ea1b54ff49ca42aa3cf180b76f9fe0d8e4369c';
 
 var contractInstance = web3.eth.contract(ABI).at(contractAddress);
 var listOfLenders = [];
@@ -357,7 +357,7 @@ function arrayToRequestString(requestArray) {
     }
 
     requestArray.map(function (request, index) {
-        returnString += 'Request: ' + (++index) + " : \n\tAmount: " + request[4] + ", \n\tDuration: " + request[5] + " days, \n\tPurpose: " + web3.toAscii(request[6]).replace(/\u0000/g, '') + ", \n\tStatus: " + web3.toAscii(request[2]).replace(/\u0000/g, '') + ", \n\tEthAccount:" + request[1] + "\n\n";
+        returnString += 'Request: ' + (++index) + " : \n\tPrincipal Amount: " + request[4] + " : \n\tPayback Amount: " + request[3] + ", \n\tDuration: " + web3.toDecimal(request[5]) + " days, \n\tPurpose: " + web3.toAscii(request[6]).replace(/\u0000/g, '') + ", \n\tStatus: " + web3.toAscii(request[2]).replace(/\u0000/g, '') + ", \n\tEthAccount:" + request[1] + "\n\n";
     });
     return returnString;
 }
@@ -366,7 +366,7 @@ function arrayToRequestString(requestArray) {
 function requestSuggestionsForBorrower() {
     var suggestions = borrowerRequests.map(function (request, index) {
         return status.components.touchable(
-            { onPress: status.components.dispatch([status.events.SET_COMMAND_ARGUMENT, [0, request[0] + ' ' + request[4]]]) },
+            { onPress: status.components.dispatch([status.events.SET_COMMAND_ARGUMENT, [0, request[0] + ' ' + request[3]]]) },
             status.components.view(
                 suggestionsContainerStyle,
                 [status.components.view(
@@ -374,7 +374,7 @@ function requestSuggestionsForBorrower() {
                     [
                         status.components.text(
                             { style: valueStyle },
-                            'Req Id : ' + request[0] + ' ; Amount : ' + request[4] + ' ; Duration : ' + request[5] + ' days'
+                            'Req Id : ' + request[0] + ' ; Payback Amount : ' + request[3] + ' ; Duration : ' + web3.toDecimal(request[5]) + ' days'
                         )
                     ]
                 )]
@@ -404,7 +404,7 @@ function requestSuggestionsForLender() {
                     [
                         status.components.text(
                             { style: valueStyle },
-                            'Req Id : ' + request[0] + ' ; Amount : ' + request[4] + ' ; Duration : ' + request[5] + ' days'
+                            'Req Id : ' + request[0] + ' ; Amount : ' + request[4] + ' ; Duration : ' + web3.toDecimal(request[5]) + ' days'
                         )
                     ]
                 )]
