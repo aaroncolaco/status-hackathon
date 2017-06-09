@@ -326,7 +326,7 @@ status.addListener("init", function (params, context) {
         messages: []
     };
     try {
-        result["text-message"] = 'Hi there!';
+        result["text-message"] = "Hi there!\nHere is a list of commands:\n\t- registerAsLender\n\t- registerAsBorrower\n\t- listLender\n\t- listLender\n\t- borrow\n\t- listBorrowRequests\n\t- acceptRequest\n\t- listSubmittedRequests\n\t- payback";
     } catch (e) {
         result.err = e;
     }
