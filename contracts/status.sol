@@ -209,7 +209,7 @@ contract RequestContract is AccountContract{ // Request Contract
     
      // payback request function
     function payback(uint reqid) payable {
-        if (reqid > totalReq || reqid <= 0 || msg.value != request[reqid].amount || request[reqid].status !='accepted'   ) {
+        if (reqid > totalReq || reqid <= 0 || msg.value != request[reqid].due_amount || request[reqid].status !='accepted'   ) {
             throw;
         } else {
             if (request[reqid].from == msg.sender) {
@@ -234,7 +234,7 @@ contract RequestContract is AccountContract{ // Request Contract
     // }
     
     // get incoming request function
-    function getIncomingRequests() constant returns(uint[]  memory, address[]  memory,  bytes32[]  memory, uint256[]  memory, uint256[]  memory , bytes32[]  memory,uint256[] memory) {
+    function getIncomingRequests() constant returns(uint[]  memory, address[]  memory,  bytes32[]  memory,uint256[] memory, uint256[]  memory, uint256[]  memory , bytes32[]  memory) {
        
        uint[] memory id;
        address[]  memory from;
@@ -266,11 +266,11 @@ contract RequestContract is AccountContract{ // Request Contract
             due_amount[i] = request[reqId].due_amount;
             
          }
-         return (id,from,status,amount,duration,purpose,due_amount);
+         return (id,from,status,due_amount,amount,duration,purpose);
     }
     
      // get outgoing request function
-    function getOutgoingRequests() constant returns(uint[]  memory, address[]  memory,  bytes32[]  memory, uint256[]  memory, uint256[]  memory , bytes32[]  memory,uint256[] memory) {
+    function getOutgoingRequests() constant returns(uint[]  memory, address[]  memory,  bytes32[]  memory,uint256[] memory, uint256[]  memory, uint256[]  memory , bytes32[]  memory) {
        
        uint[] memory id;
        address[]  memory from;
@@ -296,7 +296,7 @@ contract RequestContract is AccountContract{ // Request Contract
             duration[i] = request[reqId].duration;
             due_amount[i] = request[reqId].due_amount;
          }
-         return (id,from,status,amount,duration,purpose,due_amount);
+         return (id,from,status,due_amount,amount,duration,purpose);
     }
     
 
