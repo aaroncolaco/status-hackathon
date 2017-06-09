@@ -280,12 +280,12 @@ status.command({
     },
     {
         name: "minAmount",
-        placeholder: 'Min lending amount(Eth)',
+        placeholder: 'Min lending amount(Wei)',
         type: status.types.NUMBER
     },
     {
         name: "maxAmount",
-        placeholder: 'Max lending amount(Eth)',
+        placeholder: 'Max lending amount(Wei)',
         type: status.types.NUMBER
     },
     {
