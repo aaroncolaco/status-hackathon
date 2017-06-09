@@ -103,13 +103,13 @@ contract RequestContract { // Request Contract
        uint256[] memory duration;
        bytes32[] memory purpose;
        
-       id = new uint[](totalReq);
-       from = new address[](totalReq);
-       status = new bytes32[](totalReq);
-       date = new uint256[](totalReq);
-       amount = new uint256[](totalReq);
-       duration = new uint256[](totalReq);
-       purpose = new bytes32[](totalReq);
+       id = new uint[](incomingRequest[msg.sender].length);
+       from = new address[](incomingRequest[msg.sender].length);
+       status = new bytes32[](incomingRequest[msg.sender].length);
+       date = new uint256[](incomingRequest[msg.sender].length);
+       amount = new uint256[](incomingRequest[msg.sender].length);
+       duration = new uint256[](incomingRequest[msg.sender].length);
+       purpose = new bytes32[](incomingRequest[msg.sender].length);
         for(uint i=0; i< incomingRequest[msg.sender].length;i++) {
             uint  reqId = incomingRequest[msg.sender][i];
             id[i] = request[reqId].reqId;
@@ -133,13 +133,13 @@ contract RequestContract { // Request Contract
        uint256[] memory duration;
        bytes32[] memory purpose;
        
-       id = new uint[](totalReq);
-       from = new address[](totalReq);
-       status = new bytes32[](totalReq);
-       date = new uint256[](totalReq);
-       amount = new uint256[](totalReq);
-       duration = new uint256[](totalReq);
-       purpose = new bytes32[](totalReq);
+       id = new uint[](outgoingRequest[msg.sender].length);
+       from = new address[](outgoingRequest[msg.sender].length);
+       status = new bytes32[](outgoingRequest[msg.sender].length);
+       date = new uint256[](outgoingRequest[msg.sender].length);
+       amount = new uint256[](outgoingRequest[msg.sender].length);
+       duration = new uint256[](outgoingRequest[msg.sender].length);
+       purpose = new bytes32[](outgoingRequest[msg.sender].length);
         for(uint i=0; i< outgoingRequest[msg.sender].length;i++) {
             uint  reqId = outgoingRequest[msg.sender][i];
             id[i] = request[reqId].reqId;
