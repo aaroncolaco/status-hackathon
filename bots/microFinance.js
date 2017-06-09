@@ -40,7 +40,7 @@ status.command({
 });
 
 function acceptRequest(params) {
-    return contractInstance.acceptRequest(params.requestId, { from: web3.eth.accounts[0], value: params.amount });
+    return contractInstance.acceptRequest(params.requestId, { from: web3.eth.accounts[0], value: web.toWei(params.amount, 'ether') });
 }
 
 // Borrow
@@ -88,7 +88,7 @@ status.command({
 });
 
 function borrowAmount(params) {
-    return contractInstance.borrowRequest(params.lenderId, params.amount, params.duration, params.purpose, { from: web3.eth.accounts[0] });
+    return contractInstance.borrowRequest(params.lenderId, web.toWei(params.amount, 'ether'), params.duration, params.purpose, { from: web3.eth.accounts[0] });
 }
 
 
