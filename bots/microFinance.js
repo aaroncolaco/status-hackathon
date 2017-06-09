@@ -6,43 +6,6 @@ var listOfLenders = [];
 var listOfRequests = [];
 
 
-// Accept Borrow Request
-status.command({
-    name: "acceptRequest",
-    title: "acceptRequest",
-    description: "Accept Borrow Request - specify request Id",
-    color: "#CCCCCC",
-    params: [{
-        name: "requestId",
-        type: status.types.NUMBER,
-        placeholder: 'Request',
-        suggestions: borrowRequestSuggestions
-    },
-    {
-        name: "amount",
-        placeholder: 'Amount',
-        type: status.types.NUMBER
-    }],
-    preview: function (params) {
-        var text = status.components.text(
-            {
-                style: {
-                    marginTop: 5,
-                    marginHorizontal: 0,
-                    fontSize: 14,
-                    fontFamily: "font",
-                    color: "black"
-                }
-            }, acceptRequest(params));
-
-        return { markup: status.components.view({}, [text]) };
-    }
-});
-
-function acceptRequest(params) {
-    return contractInstance.acceptRequest(params.requestId, { from: web3.eth.accounts[0], value: params.amount });
-}
-
 // Borrow
 status.command({
     name: "borrow",
@@ -129,6 +92,44 @@ function getBorrowRequests() {
         returnString += 'Request: ' + (++index) + " : \n\tAmount: " + request[4] + ", \n\tDuration: " + request[5] + " days, \n\tPurpose: " + web3.toAscii(request[6]).replace(/\u0000/g, '') + ", \n\tStatus: " + web3.toAscii(request[2]).replace(/\u0000/g, '') + ", \n\tEthAccount:" + request[1] + "\n\n";
     });
     return returnString;
+}
+
+
+// Accept Borrow Request
+status.command({
+    name: "acceptRequest",
+    title: "acceptRequest",
+    description: "Accept Borrow Request - specify request Id",
+    color: "#CCCCCC",
+    params: [{
+        name: "requestId",
+        type: status.types.NUMBER,
+        placeholder: 'Request',
+        suggestions: borrowRequestSuggestions
+    },
+    {
+        name: "amount",
+        placeholder: 'Amount',
+        type: status.types.NUMBER
+    }],
+    preview: function (params) {
+        var text = status.components.text(
+            {
+                style: {
+                    marginTop: 5,
+                    marginHorizontal: 0,
+                    fontSize: 14,
+                    fontFamily: "font",
+                    color: "black"
+                }
+            }, acceptRequest(params));
+
+        return { markup: status.components.view({}, [text]) };
+    }
+});
+
+function acceptRequest(params) {
+    return contractInstance.acceptRequest(params.requestId, { from: web3.eth.accounts[0], value: params.amount });
 }
 
 
