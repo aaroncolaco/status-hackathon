@@ -15,12 +15,12 @@ status.command({
     params: [{
         name: "requestId",
         type: status.types.NUMBER,
-        placeholder: 'Request Id',
+        placeholder: 'Request',
         suggestions: borrowRequestSuggestions
     },
     {
         name: "amount",
-        placeholder: 'Amount (Wei)',
+        placeholder: 'Amount (Ether)',
         type: status.types.NUMBER
     }],
     preview: function (params) {
@@ -52,22 +52,22 @@ status.command({
     sequentialParams: true,
     params: [{
         name: "amount",
-        placeholder: 'Amount to Borrow (Wei)',
+        placeholder: 'Amount (Ether)',
         type: status.types.NUMBER
     },
     {
         name: "duration",
-        placeholder: 'Duration (days) to pay back',
+        placeholder: 'Duration (days)',
         type: status.types.NUMBER
     },
     {
         name: "purpose",
-        placeholder: 'Purpose of Borrowing',
+        placeholder: 'Purpose (eg. Healthcare)',
         type: status.types.TEXT
     },
     {
         name: "lenderId",
-        placeholder: 'Lender Id to Borrow From',
+        placeholder: 'Lender',
         type: status.types.TEXT,
         suggestions: lenderSuggestions
     }],
@@ -141,7 +141,7 @@ status.command({
     sequentialParams: true,
     params: [{
         name: "amount",
-        placeholder: 'Amount to borrow',
+        placeholder: 'Amount (Ether)',
         type: status.types.NUMBER
     }],
     preview: function (params) {
@@ -187,7 +187,7 @@ status.command({
     sequentialParams: true,
     params: [{
         name: "borrowerName",
-        placeholder: 'Name to register with',
+        placeholder: 'First Name',
         type: status.types.TEXT
     }],
     preview: function (params) {
@@ -219,22 +219,22 @@ status.command({
     sequentialParams: true,
     params: [{
         name: "lenderName",
-        placeholder: 'Name to register with',
+        placeholder: 'First name',
         type: status.types.TEXT
     },
     {
         name: "minAmount",
-        placeholder: 'Min amount you are willing to lend (Wei)',
+        placeholder: 'Min lending amount (Ether)',
         type: status.types.NUMBER
     },
     {
         name: "maxAmount",
-        placeholder: 'Max amount willing to lend (Wei)',
+        placeholder: 'Max lending amount (Ether)',
         type: status.types.NUMBER
     },
     {
         name: "interestRate",
-        placeholder: 'Interest Rate to charge',
+        placeholder: 'Interest Rate',
         type: status.types.TEXT
     }],
     preview: function (params) {
