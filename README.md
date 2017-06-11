@@ -13,7 +13,7 @@ Hackathon GitHub Issue: https://github.com/status-im/hackathon/issues/83
 ```
 
 
-## Useage
+## Usage
 
 * Install npm module `status-dev-cli`
 * Install Status app on phone
